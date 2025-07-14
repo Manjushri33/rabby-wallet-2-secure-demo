@@ -1,0 +1,23 @@
+import { WalletController } from './walletController';
+
+const wallet = new WalletController();
+
+async function demo() {
+  const mnemonic = prompt('Введіть seed-фразу (demo, не зберігаємо)');
+  const password = prompt('Введіть пароль для шифрування ключів');
+
+  await wallet.importWallet(mnemonic || '', password || '');
+
+  alert('Гаманець імпортовано!');
+
+  const unlockPassword = prompt('Введіть пароль для розблокування');
+  await wallet.unlock(unlockPassword || '');
+
+  const signedTx = await wallet.signTransaction({ to: '0x123', amount: 1 });
+  alert('Підписана транзакція: ' + signedTx);
+
+  wallet.lock();
+  alert('Гаманець заблоковано');
+}
+
+demo();
